@@ -12,7 +12,7 @@ CHARITY = function(id){
 	
 	self.init = function(){
 		console.log("charity init");
-		self.ajaxUrl = "/tbd-load-charity";
+		self.ajaxUrl = "http://npbendre.com/causecompass/api.php?action=get_charity&charity_id=";
 		self.charityId = id;
 		self.ajax();
 	};
@@ -20,27 +20,27 @@ CHARITY = function(id){
 	self.ajax = function(){
 		console.log("pulling ajax from: "+self.ajaxUrl);
 		$.ajax({
-			url: self.ajaxUrl,
-			type: "POST",
-			data: {
-				charityId : self.charityId
-			},
+			url: self.ajaxUrl + self.charityId,
+			dataType: "jsonp",
 			success: function(data){
 				console.log("ajax success!");
-				self.populate(data);
+				self.populate(data[0]);
 			},
 			error: function(j,t,e){
 				console.log("error loading charity: "+self.charityId);
-				window.location.href = "/";
+				//window.location.href = "/";
 			}
 		});
 	};
 	
 	self.populate = function(data){
 		console.log("populating data");
-		$('#name').html(data.name);
-		$('#desc').html(data.longDescription);
-		$('#link a').attr('href', data.link);
+		console.log(data);
+		$('#name').html(data.charity_name);
+		$('#desc').html(data.additional_info);
+		$('#phone').html(data.phonenumber);
+		$('#link a').attr('href', data.website_link);
+		$('#link a').html(data.website_link);
 	};
 	
 	
